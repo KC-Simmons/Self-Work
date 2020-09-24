@@ -3,6 +3,9 @@ import random as rand
 import math
 import matplotlib.pyplot as plt
 import seaborn as sns
+import time
+
+start_time = time.time()
 
 sns.set()
 
@@ -182,12 +185,22 @@ def countpointsinhand(givenhand):
 amountofcardsdealt = 12
 amountofhands = 100000
 handmaxpointmat = []
+handdrawnoutmat = []
 
 for i in range(amountofhands):
-    handmaxpointmat.append(max(countpointsinhand(drawahand(amountofcardsdealt))))
+    handdrawn = drawahand(amountofcardsdealt)
+    handmaxpointmat.append(max(countpointsinhand(handdrawn)))
+    if max(countpointsinhand(handdrawn)) >= 35:
+        handdrawnoutmat.append(handdrawn)
 
-pinhist = plt.hist(handmaxpointmat, bins = range(max(handmaxpointmat)), density = True, cumulative = True)
+for i in range(len(handdrawnoutmat)):
+    print(max(countpointsinhand(handdrawnoutmat[i])))
+    ShowHand(handdrawnoutmat[i])
+
+print('My program took', time.time() - start_time, 'to run')
+
+pinhist = plt.hist(handmaxpointmat, bins = range(max(handmaxpointmat)), density = True)
 pinhist = plt.xlabel('Amount of Points')
 pinhist = plt.ylabel('Frequency')
-pinhist = plt.title('Cum Dense - 4 Pl Pin - Max Point in Single Hand - 100,000 Trials')
+pinhist = plt.title('Frequency - 4 Pl Pin - Max Point in Single Hand - 1,000,000 Trials')
 plt.show()
